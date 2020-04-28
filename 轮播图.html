@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        ul,ol{
+            list-style: none;
+        }
+        a,
+        a:hover,
+        a:active{
+            text-decoration: none;
+        }
+        .box{
+            width: 1200px;
+            height: 400px;
+            margin: 0 auto;
+            margin-top: 50px;
+            position: relative;
+        }
+        .box .banner{
+            width: 1200px;
+            height: 400px;
+        }
+        .box .banner ul{
+            width: 7200px;
+            height: 400px;
+
+        }
+        .box .banner ul li{
+            width: 1200px;
+            height: 400px;
+            float: left;
+        }
+        .box .banner ul li a{
+            display: block;
+        }
+        .box .banner ul li a img{
+            display: block;
+            width: 1200px;
+            height: 400px;
+        }
+        
+        .box .circle ol{
+            width: 150px;
+            height: 20px;
+            /* background-color: red; */
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translate(-50%,-15px);
+            
+        }
+        .box .circle ol li{
+           width: 18px;
+           height: 18px;
+           border: 1px solid white;
+           border-radius: 50%;
+           margin: 5px;
+           float: left;
+        }
+        .box .circle ol li.active{
+            background-color: red;
+        }
+        .box .btn .bottom{
+            width: 50px;
+            height: 50px;
+            /* background-color: rgba(255, 255, 255, 0.5); */
+            background-color: red;
+            position: absolute;
+            top: 50%;
+            text-align: center;
+            line-height: 50px;
+            margin-top: -25px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .box .btn .l_btn{
+           left: 0;
+        }
+        .box .btn .r_btn{
+            right: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="banner">
+            <ul>
+                <li><a href="javascript:''"><img src="./images/banner01.jpg" alt=""></a></li>
+                <li><a href="javascript:''"><img src="./images/banner02.jpg" alt=""></a></li>
+                <li><a href="javascript:''"><img src="./images/banner03.jpg" alt=""></a></li>
+                <li><a href="javascript:''"><img src="./images/banner04.jpg" alt=""></a></li>
+                <li><a href="javascript:''"><img src="./images/banner05.jpg" alt=""></a></li>
+                <li><a href="javascript:''"><img src="./images/banner01.jpg" alt=""></a></li>
+            </ul>
+        </div>
+
+        <div class="circle">
+            <ol>
+                <li class="active"></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ol>
+        </div>
+
+        <div class="btn">
+            <div class="bottom l_btn"><span><</span></div>
+            <div class="bottom r_btn"><span>></span></div>
+        </div>
+    </div>
+
+    <script src="./jq/jq.js"></script>
+    <script>
+        var index = 0
+        var key = 0
+        var timer = null
+        var width = 1200
+        // 自动轮播
+        function autoplay(){
+            index ++
+            key ++
+
+            key = key > ($(".circle ol li").length-1) ? 0 : key
+
+            $(".circle ol li").eq(key).addClass("active").siblings().removeClass("active")
+
+            if(index > ($("ul li").length-1)){
+                index = 1
+                $("ul ").css("marginLeft",0)
+            }
+
+
+            $("ul").animate({
+                "marginLeft":(-index*width)
+            },500)
+        }
+
+        timer = setInterval(autoplay,1000)
+
+        // 鼠标事件
+        $(".box").mouseenter(function(){
+            clearInterval(timer)
+        })
+        $(".box").mouseleave(function(){
+            clearInterval(timer)
+            timer = setInterval(autoplay,1000)
+        })
+
+        // 点击圆点
+        $(".circle ol li").click(function(){
+
+            var current = $(this).index()
+
+            key = current
+            $(".circle ol li").eq(key).addClass("active").siblings().removeClass("active")
+
+            index = current
+            $("ul").animate({
+                "marginLeft":(-index*width)
+
+            },300)
+        })
+
+        // 左按钮
+        $(".l_btn").click(function(){
+            index --
+            if(index < 0){
+                index = $("ul li").length-2
+                $("ul").css("marginLeft",-(index*width))
+            }
+            $("ul").animate({
+                "marginLeft":(-index*width)
+
+            },300)
+
+            key --
+            if(key <0){
+                key = $(".circle ol li").length-1
+
+            }
+            $(".circle ol li").eq(key).addClass("active").siblings().removeClass("active")
+
+
+        })
+
+         // 右按钮
+         $(".r_btn").click(function(){
+            index ++
+            key ++
+
+            key = key > ($(".circle ol li").length-1) ? 0 : key
+
+            $(".circle ol li").eq(key).addClass("active").siblings().removeClass("active")
+
+            if(index > ($("ul li").length-1)){
+                index = 1
+                $("ul ").css("marginLeft",0)
+            }
+
+
+            $("ul").animate({
+                "marginLeft":(-index*width)
+            },500)
+
+        })
+
+
+
+
+
+    </script>
+</body>
+</html>
